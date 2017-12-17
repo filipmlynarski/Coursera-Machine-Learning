@@ -1,0 +1,31 @@
+delta1 = zeros(size(Theta1));
+delta2 = zeros(size(Theta2));
+y2 = zeros(m, num_labels);
+
+for i = 1:m
+  y2(i, y(i)) = 1;
+  
+  a1 = [1 X(i, :)];
+  z2 = a1 * Theta1';
+  a2 = [1 sigmoid(z2)];
+  z3 = a2 * Theta2';
+  a3 = sigmoid(z3);
+  
+  %error3 = a3 - y2(i);
+  error3 = A3(i, :) - Y(i, :);
+  error2 = error3 * Theta2 .* sigmoidGradient([1 z2]);
+  error2 = error2(:, 2: length(error2));
+  
+  delta1 += error2' .* a1;
+  delta2 += error3' .* a2;
+  if i==-1
+    error3
+    a2
+
+    error2
+    a1(1:10)
+    end
+  end
+
+Theta1_grad = 1/m * delta1;
+Theta2_grad = 1/m * delta2;
